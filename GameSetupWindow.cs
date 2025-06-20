@@ -118,20 +118,26 @@ namespace Towers_Of_Hanoi
 
         private void M_StartBtn_Click(object sender, EventArgs e)
         {
-            using (Level1 level1 = new Level1())
+            int diskCount = 3; // Default for level 1
+            if (NumberOfLevels == 2)
+                diskCount = 6;
+            else if (NumberOfLevels == 3)
+                diskCount = 8;
+
+            using (ColorChoiceForm colorForm = new ColorChoiceForm(diskCount))
             {
-                var result = level1.ShowDialog();
+                var result = colorForm.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
-                    MainWindow mainWindow = new MainWindow(level1.SelectedColors);
+                    MainWindow mainWindow = new MainWindow(colorForm.SelectedColors);
                     Hide();
                     mainWindow.ShowDialog();
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("You must select exactly 3 colors to start the game.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"You must select exactly {diskCount} colors to start the game.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -152,7 +158,7 @@ namespace Towers_Of_Hanoi
         private void UpdateCounterButtonText()
         {
             if (m_CounterBtn != null)
-                m_CounterBtn.Text = $"Number of levels: {NumberOfLevels}";
+                m_CounterBtn.Text = $"Number of level: {NumberOfLevels}";
         }
     }
 }

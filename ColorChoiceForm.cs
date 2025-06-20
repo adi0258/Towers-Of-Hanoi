@@ -5,16 +5,29 @@ using System.Windows.Forms;
 
 namespace Towers_Of_Hanoi
 {
-    public partial class Level1 : Form
+    public partial class ColorChoiceForm : Form
     {
         private readonly List<CheckBox> r_ColorCheckBoxes = new List<CheckBox>();
-        private const int k_MaxColors = 3;
+        private int k_MaxColors;
+        private Label labelSelectedCount;
 
         public List<string> SelectedColors { get; private set; } = new List<string>();
 
-        public Level1()
+        public ColorChoiceForm(int maxColors)
         {
-            InitializeComponent(); // Initialize UI components
+            k_MaxColors = maxColors;
+            InitializeComponent();
+
+            labelSelectedCount = new Label
+            {
+                AutoSize = true,
+                Font = new System.Drawing.Font("Comic Sans MS", 10, System.Drawing.FontStyle.Bold),
+                ForeColor = System.Drawing.Color.MediumVioletRed,
+                Top = 10,
+                Left = 10,
+                Text = $"Selected: 0 / {k_MaxColors}"
+            };
+            Controls.Add(labelSelectedCount);
 
             confirmButton.Click += ConfirmButton_Click;
 
@@ -22,9 +35,10 @@ namespace Towers_Of_Hanoi
             MaximizeBox = false;
             MinimizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Level 1 - Color Selection";
+            Text = $"Level - Color Selection ({k_MaxColors} colors)";
 
             InitializeColorCheckboxes();
+            UpdateSelectedCountLabel();
         }
 
         private void InitializeColorCheckboxes()
@@ -50,6 +64,13 @@ namespace Towers_Of_Hanoi
                 MessageBox.Show($"You can only select {k_MaxColors} colors!", "Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 ((CheckBox)sender).Checked = false;
             }
+            UpdateSelectedCountLabel();
+        }
+
+        private void UpdateSelectedCountLabel()
+        {
+            int checkedCount = r_ColorCheckBoxes.Count(cb => cb.Checked);
+            labelSelectedCount.Text = $"Selected: {checkedCount} / {k_MaxColors}";
         }
 
         private void ConfirmButton_Click(object sender, EventArgs e)

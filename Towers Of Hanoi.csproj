@@ -59,23 +59,11 @@
     <Compile Include="Instructions.Designer.cs">
       <DependentUpon>Instructions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Level1.cs">
+    <Compile Include="ColorChoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Level1.Designer.cs">
-      <DependentUpon>Level1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Level2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Level2.Designer.cs">
-      <DependentUpon>Level2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Level3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Level3.Designer.cs">
-      <DependentUpon>Level3.cs</DependentUpon>
+    <Compile Include="ColorChoiceForm.Designer.cs">
+      <DependentUpon>ColorChoiceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -88,8 +76,8 @@
     <EmbeddedResource Include="GameSetupWindow.resx">
       <DependentUpon>GameSetupWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Level1.resx">
-      <DependentUpon>Level1.cs</DependentUpon>
+    <EmbeddedResource Include="ColorChoiceForm.resx">
+      <DependentUpon>ColorChoiceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

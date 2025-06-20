@@ -41,7 +41,7 @@ namespace Towers_Of_Hanoi
             // Add instruction label at the top
             Label instructionLabel = new Label
             {
-                Text = "Move all the disks to peg C 💖",
+                Text = "Move all the disks to peg C",
                 AutoSize = false,
                 Height = 40,
                 Dock = DockStyle.Top,
@@ -154,17 +154,17 @@ namespace Towers_Of_Hanoi
                         path.CloseFigure();
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                         e.Graphics.FillPath(brush, path);
-                        using (var pen = new Pen(Color.HotPink, 3))
+                        using (var pen = new Pen(Color.Black, 6))
                         {
                             e.Graphics.DrawPath(pen, path);
                         }
                     }
-                    // Add a cute heart emoji in the center
-                    using (var font = new Font("Segoe UI Emoji", 10))
-                    using (var format = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                    {
-                        e.Graphics.DrawString("💗", font, Brushes.DeepPink, panel.Width / 2, panel.Height / 2, format);
-                    }
+                    //// Add a cute heart emoji in the center
+                    //using (var font = new Font("Segoe UI Emoji", 10))
+                    //using (var format = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                    //{
+                    //    e.Graphics.DrawString("💗", font, Brushes.DeepPink, panel.Width / 2, panel.Height / 2, format);
+                    //}
                 };
 
                 disk.MouseDown += Disk_MouseDown;
@@ -220,7 +220,7 @@ namespace Towers_Of_Hanoi
             // Show move label after each move
             string from = GetPegName(sourcePeg);
             string to = GetPegName(targetPeg);
-            showMessage($"Moved disk from peg {from} to peg {to} 💗");
+            showMessage($"Moved disk from peg {from} to peg {to}");
 
             if (r_PegDisks[peg3].Count == m_SelectedColors.Count)
             {

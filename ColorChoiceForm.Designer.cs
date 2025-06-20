@@ -1,6 +1,6 @@
 ﻿namespace Towers_Of_Hanoi
 {
-    partial class Level1
+    partial class ColorChoiceForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -38,14 +38,14 @@
             // 
             // confirmButton
             // 
-            this.confirmButton.Location = new System.Drawing.Point(90, 240);
+            this.confirmButton.Location = new System.Drawing.Point(90, 280);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(100, 30);
             this.confirmButton.Text = "Confirm";
             this.confirmButton.UseVisualStyleBackColor = true;
 
             // Position and setup checkboxes
-            int startX = 30, startY = 20, gapY = 25;
+            int startX = 30, startY = 50, gapY = 25;
             void SetupCheckBox(System.Windows.Forms.CheckBox cb, string text, int idx)
             {
                 cb.Text = text;
@@ -73,6 +73,7 @@
 
             this.Name = "Level1";
             this.Text = "Select Colors";
+            this.Size= new System.Drawing.Size(300, 350);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
