@@ -21,34 +21,35 @@ namespace Towers_Of_Hanoi
 
         public MainWindow(List<string> selectedColors)
         {
+            // Validate input
             m_SelectedColors = selectedColors ?? throw new ArgumentNullException(nameof(selectedColors));
 
             InitializeComponent();
             InitializeGameUI();
         }
 
-        private void InitializeGameUI()
+        private void InitializeGameUI()// Initialize the game UI components
         {
             basePanel = new Panel
             {
-                Dock = DockStyle.Fill,
-                BackColor = Color.LightGray
+                Dock = DockStyle.Fill,// Fill the form
+                BackColor = Color.LightGray// Background color
             };
-            Controls.Add(basePanel);
+            Controls.Add(basePanel);// Add the base panel to the form
 
-            peg1 = CreatePeg(150);
+            peg1 = CreatePeg(150);// Create pegs at specified positions
             peg2 = CreatePeg(350);
             peg3 = CreatePeg(550);
 
-            basePanel.Controls.AddRange(new Control[] { peg1, peg2, peg3 });
+            basePanel.Controls.AddRange(new Control[] { peg1, peg2, peg3 });// Add pegs to the base panel
 
-            r_PegDisks[peg1] = new List<Panel>();
+            r_PegDisks[peg1] = new List<Panel>();// Initialize disk lists for each peg
             r_PegDisks[peg2] = new List<Panel>();
             r_PegDisks[peg3] = new List<Panel>();
 
             CreateDisks(m_SelectedColors);
 
-            foreach (Panel peg in new[] { peg1, peg2, peg3 })
+            foreach (Panel peg in new[] { peg1, peg2, peg3 })// Enable drag-and-drop for each peg
             {
                 peg.AllowDrop = true;
                 peg.DragEnter += Peg_DragEnter;
@@ -56,7 +57,7 @@ namespace Towers_Of_Hanoi
             }
         }
 
-        private Panel CreatePeg(int centerX)
+        private Panel CreatePeg(int centerX)// Create a peg at the specified horizontal position
         {
             return new Panel
             {
@@ -66,6 +67,7 @@ namespace Towers_Of_Hanoi
                 Left = centerX - 5,
                 Top = 150
             };
+            
         }
 
         private void CreateDisks(List<string> selectedColors)
@@ -74,7 +76,8 @@ namespace Towers_Of_Hanoi
 
             for (int i = 0; i < count; i++)
             {
-                int width = k_DiskMaxWidth - i * ((k_DiskMaxWidth - k_DiskMinWidth) / (count - 1));
+                // Create disks with increasing width based on their index
+                int width = k_DiskMinWidth + i * ((k_DiskMaxWidth - k_DiskMinWidth) / (count - 1));
                 Panel disk = new Panel
                 {
                     Height = k_DiskHeight,
@@ -87,10 +90,12 @@ namespace Towers_Of_Hanoi
 
                 disk.MouseDown += Disk_MouseDown;
 
+
                 r_PegDisks[peg1].Insert(0, disk);
                 basePanel.Controls.Add(disk);
-                UpdateDiskPositions(peg1);
+                disk.BringToFront();
             }
+            UpdateDiskPositions(peg1);
         }
 
         private void Disk_MouseDown(object sender, MouseEventArgs e)
