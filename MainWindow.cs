@@ -10,6 +10,8 @@ namespace Towers_Of_Hanoi
     {
         private Panel peg1, peg2, peg3;
         private Panel basePanel;
+        private Label messageLabel;
+
 
         private const int k_DiskHeight = 20;
         private const int k_DiskMaxWidth = 160;
@@ -42,6 +44,20 @@ namespace Towers_Of_Hanoi
             peg3 = CreatePeg(550);
 
             basePanel.Controls.AddRange(new Control[] { peg1, peg2, peg3 });// Add pegs to the base panel
+
+            messageLabel = new Label
+            {
+                AutoSize = false,
+                Height = 30,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                ForeColor = Color.DarkBlue,
+                BackColor = Color.LightYellow
+            };
+
+            basePanel.Controls.Add(messageLabel);
+
 
             r_PegDisks[peg1] = new List<Panel>();// Initialize disk lists for each peg
             r_PegDisks[peg2] = new List<Panel>();
@@ -128,7 +144,7 @@ namespace Towers_Of_Hanoi
                 int topWidth = (int)r_PegDisks[targetPeg][r_PegDisks[targetPeg].Count - 1].Tag;
                 if ((int)disk.Tag > topWidth)
                 {
-                    MessageBox.Show("Cannot place a larger disk on a smaller one.", "Invalid Move", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    showMessage("Cannot place a larger disk on a smaller one ❌");
                     return;
                 }
             }
@@ -141,7 +157,7 @@ namespace Towers_Of_Hanoi
 
             if (r_PegDisks[peg3].Count == m_SelectedColors.Count)
             {
-                MessageBox.Show("🎉 You solved the puzzle!", "Victory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                showMessage("You solved the puzzle!🎉");
             }
         }
 
@@ -156,6 +172,18 @@ namespace Towers_Of_Hanoi
                 disk.Top = baseY - (i + 1) * (k_DiskHeight + 2);
                 disk.Left = centerX - disk.Width / 2;
             }
+        }
+        private void showMessage(string text, int durationMs = 3000)
+        {
+            messageLabel.Text = text;
+            Timer timer = new Timer { Interval = durationMs };
+            timer.Tick += (s, e) =>
+            {
+                messageLabel.Text = string.Empty;
+                timer.Stop();
+                timer.Dispose();
+            };
+            timer.Start();
         }
     }
 }
