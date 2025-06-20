@@ -22,6 +22,7 @@ namespace Towers_Of_Hanoi
 
         public MainWindow(List<string> selectedColors)
         {
+            this.Icon = new Icon("favicon.ico");
             // Validate input
             m_SelectedColors = selectedColors ?? throw new ArgumentNullException(nameof(selectedColors));
 

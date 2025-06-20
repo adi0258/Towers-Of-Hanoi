@@ -10,6 +10,7 @@ namespace Towers_Of_Hanoi
         private Button m_CounterBtn;
         private Button m_InstructionsBtn; 
         private int m_NumberOfLevels = 1;
+        
 
         public int NumberOfLevels
         {
@@ -26,6 +27,7 @@ namespace Towers_Of_Hanoi
 
         public GameSetupWindow()
         {
+            this.Icon = new Icon("favicon.ico");
             InitializeComponentSetup();
 
             // Cute & girlish style

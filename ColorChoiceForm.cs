@@ -15,6 +15,7 @@ namespace Towers_Of_Hanoi
 
         public ColorChoiceForm(int maxColors)
         {
+            this.ShowInTaskbar= false;
             k_MaxColors = maxColors;
             InitializeComponent();
 
