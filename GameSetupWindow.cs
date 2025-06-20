@@ -8,6 +8,7 @@ namespace Towers_Of_Hanoi
     {
         private Button m_StartBtn;
         private Button m_CounterBtn;
+        private Button m_InstructionsBtn; 
         private int m_NumberOfLevels = 1;
 
         public int NumberOfLevels
@@ -27,22 +28,59 @@ namespace Towers_Of_Hanoi
         {
             InitializeComponentSetup();
 
+            // Cute & girlish style
+            this.BackColor = Color.MistyRose;
+            this.Font = new Font("Comic Sans MS", 11, FontStyle.Bold);
+
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Choose Levels";
+            Text = "Choose Your Level! ✨";
+
+            // Add a cute title label
+            Label titleLabel = new Label
+            {
+                Text = "🌸 Towers of Hanoi 🌸",
+                AutoSize = false,
+                Width = 359,
+                Height = 40,
+                Top = 5,
+                Left = 0,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Comic Sans MS", 18, FontStyle.Bold),
+                ForeColor = Color.HotPink,
+                BackColor = Color.Transparent
+            };
+            Controls.Add(titleLabel);
+            titleLabel.BringToFront();
 
             UpdateCounterButtonText();
 
-            m_CounterBtn.Font = new Font("Arial", 10, FontStyle.Bold);
-            m_StartBtn.Font = new Font("Arial", 10, FontStyle.Bold);
+            m_CounterBtn.Font = new Font("Comic Sans MS", 10, FontStyle.Bold);
+            m_CounterBtn.ForeColor = Color.MediumVioletRed;
+            m_CounterBtn.BackColor = Color.LavenderBlush;
+
+            m_StartBtn.Font = new Font("Comic Sans MS", 12, FontStyle.Bold);
+            m_StartBtn.ForeColor = Color.White;
+            m_StartBtn.BackColor = Color.HotPink;
+            m_StartBtn.FlatStyle = FlatStyle.Flat;
+            m_StartBtn.FlatAppearance.BorderColor = Color.DeepPink;
+            m_StartBtn.FlatAppearance.BorderSize = 2;
+
+            m_InstructionsBtn.Font = new Font("Comic Sans MS", 12, FontStyle.Bold);
+            m_InstructionsBtn.ForeColor = Color.White;
+            m_InstructionsBtn.BackColor = Color.MediumVioletRed;
+            m_InstructionsBtn.FlatStyle = FlatStyle.Flat;
+            m_InstructionsBtn.FlatAppearance.BorderColor = Color.HotPink;
+            m_InstructionsBtn.FlatAppearance.BorderSize = 2;
         }
 
         private void InitializeComponentSetup()
         {
             m_StartBtn = new Button();
             m_CounterBtn = new Button();
+            m_InstructionsBtn = new Button();
 
             SuspendLayout();
 
@@ -61,10 +99,19 @@ namespace Towers_Of_Hanoi
             m_CounterBtn.UseVisualStyleBackColor = true;
             m_CounterBtn.Click += M_CounterBtn_Click;
 
+            // Instructions Button
+            m_InstructionsBtn.Location = new Point(124, 180);
+            m_InstructionsBtn.Name = "m_InstructionsBtn";
+            m_InstructionsBtn.Size = new Size(108, 30);
+            m_InstructionsBtn.Text = "Instructions";
+            m_InstructionsBtn.UseVisualStyleBackColor = true;
+            m_InstructionsBtn.Click += M_InstructionsBtn_Click;
+
             // Form
-            ClientSize = new Size(359, 210);
+            ClientSize = new Size(359, 230);
             Controls.Add(m_StartBtn);
             Controls.Add(m_CounterBtn);
+            Controls.Add(m_InstructionsBtn);
 
             ResumeLayout(false);
         }
@@ -92,6 +139,14 @@ namespace Towers_Of_Hanoi
         private void M_CounterBtn_Click(object sender, EventArgs e)
         {
             NumberOfLevels++;
+        }
+
+        private void M_InstructionsBtn_Click(object sender, EventArgs e)
+        {
+            using (Instructions instructions = new Instructions())
+            {
+                instructions.ShowDialog();
+            }
         }
 
         private void UpdateCounterButtonText()

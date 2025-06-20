@@ -12,7 +12,6 @@ namespace Towers_Of_Hanoi
         private Panel basePanel;
         private Label messageLabel;
 
-
         private const int k_DiskHeight = 20;
         private const int k_DiskMaxWidth = 160;
         private const int k_DiskMinWidth = 60;
@@ -30,42 +29,60 @@ namespace Towers_Of_Hanoi
             InitializeGameUI();
         }
 
-        private void InitializeGameUI()// Initialize the game UI components
+        private void InitializeGameUI()
         {
             basePanel = new Panel
             {
-                Dock = DockStyle.Fill,// Fill the form
-                BackColor = Color.LightGray// Background color
+                Dock = DockStyle.Fill,
+                BackColor = Color.MistyRose // Soft pink background
             };
-            Controls.Add(basePanel);// Add the base panel to the form
+            Controls.Add(basePanel);
 
-            peg1 = CreatePeg(150);// Create pegs at specified positions
+            // Add instruction label at the top
+            Label instructionLabel = new Label
+            {
+                Text = "Move all the disks to peg C 💖",
+                AutoSize = false,
+                Height = 40,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Comic Sans MS", 16, FontStyle.Bold),
+                ForeColor = Color.DeepPink,
+                BackColor = Color.LavenderBlush
+            };
+            basePanel.Controls.Add(instructionLabel);
+
+            peg1 = CreatePeg(150);
             peg2 = CreatePeg(350);
             peg3 = CreatePeg(550);
 
-            basePanel.Controls.AddRange(new Control[] { peg1, peg2, peg3 });// Add pegs to the base panel
+            basePanel.Controls.AddRange(new Control[] { peg1, peg2, peg3 });
+
+            // Add cute labels under each peg
+            AddPegLabel(peg1, "A", Color.HotPink);
+            AddPegLabel(peg2, "B", Color.MediumVioletRed);
+            AddPegLabel(peg3, "C", Color.DeepPink);
 
             messageLabel = new Label
             {
                 AutoSize = false,
-                Height = 30,
+                Height = 40,
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Arial", 10, FontStyle.Bold),
-                ForeColor = Color.DarkBlue,
-                BackColor = Color.LightYellow
+                Font = new Font("Comic Sans MS", 14, FontStyle.Bold),
+                ForeColor = Color.HotPink,
+                BackColor = Color.LavenderBlush
             };
 
             basePanel.Controls.Add(messageLabel);
 
-
-            r_PegDisks[peg1] = new List<Panel>();// Initialize disk lists for each peg
+            r_PegDisks[peg1] = new List<Panel>();
             r_PegDisks[peg2] = new List<Panel>();
             r_PegDisks[peg3] = new List<Panel>();
 
             CreateDisks(m_SelectedColors);
 
-            foreach (Panel peg in new[] { peg1, peg2, peg3 })// Enable drag-and-drop for each peg
+            foreach (Panel peg in new[] { peg1, peg2, peg3 })
             {
                 peg.AllowDrop = true;
                 peg.DragEnter += Peg_DragEnter;
@@ -73,7 +90,25 @@ namespace Towers_Of_Hanoi
             }
         }
 
-        private Panel CreatePeg(int centerX)// Create a peg at the specified horizontal position
+        // Overload AddPegLabel for color
+        private void AddPegLabel(Panel peg, string text, Color color)
+        {
+            Label label = new Label
+            {
+                Text = text,
+                AutoSize = true,
+                Font = new Font("Comic Sans MS", 18, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = color,
+                BackColor = Color.Transparent
+            };
+            label.Left = peg.Left + peg.Width / 2 - label.PreferredWidth / 2;
+            label.Top = peg.Top + peg.Height + 5;
+            label.BringToFront();
+            basePanel.Controls.Add(label);
+        }
+
+        private Panel CreatePeg(int centerX)
         {
             return new Panel
             {
@@ -83,7 +118,6 @@ namespace Towers_Of_Hanoi
                 Left = centerX - 5,
                 Top = 150
             };
-            
         }
 
         private void CreateDisks(List<string> selectedColors)
@@ -92,20 +126,48 @@ namespace Towers_Of_Hanoi
 
             for (int i = 0; i < count; i++)
             {
-                // Create disks with increasing width based on their index
                 int width = k_DiskMinWidth + i * ((k_DiskMaxWidth - k_DiskMinWidth) / (count - 1));
                 Panel disk = new Panel
                 {
                     Height = k_DiskHeight,
                     Width = width,
                     BackColor = Color.FromName(selectedColors[i]),
-                    BorderStyle = BorderStyle.FixedSingle,
+                    BorderStyle = BorderStyle.None,
                     Tag = width,
                     Cursor = Cursors.Hand
                 };
 
-                disk.MouseDown += Disk_MouseDown;
+                // Add a cute border and shadow effect
+                disk.Paint += (s, e) =>
+                {
+                    var panel = (Panel)s;
+                    int radius = panel.Height;
+                    using (var shadowBrush = new SolidBrush(Color.FromArgb(60, 255, 182, 193)))
+                    {
+                        e.Graphics.FillEllipse(shadowBrush, 4, 4, panel.Width - 8, panel.Height - 4);
+                    }
+                    using (var brush = new SolidBrush(panel.BackColor))
+                    using (var path = new System.Drawing.Drawing2D.GraphicsPath())
+                    {
+                        path.AddArc(0, 0, radius, radius, 90, 180);
+                        path.AddArc(panel.Width - radius, 0, radius, radius, 270, 180);
+                        path.CloseFigure();
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        e.Graphics.FillPath(brush, path);
+                        using (var pen = new Pen(Color.HotPink, 3))
+                        {
+                            e.Graphics.DrawPath(pen, path);
+                        }
+                    }
+                    // Add a cute heart emoji in the center
+                    using (var font = new Font("Segoe UI Emoji", 10))
+                    using (var format = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                    {
+                        e.Graphics.DrawString("💗", font, Brushes.DeepPink, panel.Width / 2, panel.Height / 2, format);
+                    }
+                };
 
+                disk.MouseDown += Disk_MouseDown;
 
                 r_PegDisks[peg1].Insert(0, disk);
                 basePanel.Controls.Add(disk);
@@ -155,10 +217,24 @@ namespace Towers_Of_Hanoi
             UpdateDiskPositions(sourcePeg);
             UpdateDiskPositions(targetPeg);
 
+            // Show move label after each move
+            string from = GetPegName(sourcePeg);
+            string to = GetPegName(targetPeg);
+            showMessage($"Moved disk from peg {from} to peg {to} 💗");
+
             if (r_PegDisks[peg3].Count == m_SelectedColors.Count)
             {
                 showMessage("You solved the puzzle!🎉");
             }
+        }
+
+        // Helper to get peg name
+        private string GetPegName(Panel peg)
+        {
+            if (peg == peg1) return "A";
+            if (peg == peg2) return "B";
+            if (peg == peg3) return "C";
+            return "?";
         }
 
         private void UpdateDiskPositions(Panel peg)
@@ -173,6 +249,7 @@ namespace Towers_Of_Hanoi
                 disk.Left = centerX - disk.Width / 2;
             }
         }
+
         private void showMessage(string text, int durationMs = 3000)
         {
             messageLabel.Text = text;
